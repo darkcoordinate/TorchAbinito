@@ -5,7 +5,7 @@ using namespace std;
 double E(int i, int j, int t, double Qx, double a, double b);
 double overlap(double a, shared_ptr<int> lmn1, shared_ptr<double> A,
                double b, shared_ptr<int> lmn2, shared_ptr<double> B);
-
+double fact2(double f);
 class BasisFunction
 {
     /** A class that contains all our basis function data
@@ -15,15 +15,15 @@ class BasisFunction
         exps:   list of primitive Gaussian exponents
         coefs:  list of primitive Gaussian coefficients
         norm:   list of normalization factors for Gaussian primitives
-    */
+        */
+
 public:
     vector<double> origin;
     vector<int> shell;
     vector<double> exps;
     vector<double> coefs;
-    double norm;
-    vector<double> normalize;
-    BasisFunction(vector<double> exps, vector<double> coefs, vector<double> origin = {0.0, 0.0, 0.0}, vector<int> shell = {0, 0, 0})
+    vector<double> norm;
+    BasisFunction(vector<double> exps, vector<double> coefs, vector<double> origin = {0.0, 0.0, 0.0}, vector<int> shell = {0, 0, 0}) : norm(coefs.size())
     {
         this->origin = origin;
         this->shell = shell;
@@ -42,25 +42,36 @@ public:
         int L = l + m + n;
         //self.norm is a list of length equal to number primitives
         //normalize primitives first(PGBFs)
-        this->norm = sqrt(pow(2,2*(l+m+n)+1.5)*
-                        pow(this->exps,l+m+n+1.5)/
-                        fact2(2*l-1)/fact2(2*m-1)/
-                        fact2(2*n-1)/pow(np.pi,1.5))
+        for (size_t i = 0; i < this->norm.size(); i++)
+        {
+            this->norm[i] = sqrt(pow(2, 2 * (l + m + n) + 1.5) *
+                                 pow(this->exps[i], l + m + n + 1.5) /
+                                 fact2(2 * l - 1) / fact2(2 * m - 1) /
+                                 fact2(2 * n - 1) / pow(M_1_PI, 1.5));
+        }
 
-//now normalize the contracted basis functions(CGBFs)
-//Eq.1.44 of Valeev integral whitepaper
-        prefactor = pow(np.pi,1.5)*\
-            fact2(2*l - 1)*fact2(2*m - 1)*fact2(2*n - 1)/pow(2.0,L)
+        //now normalize the contracted basis functions(CGBFs)
+        //Eq.1.44 of Valeev integral whitepaper
+        double prefactor = pow(M_1_PI, 1.5) *
+                           fact2(2 * l - 1) * fact2(2 * m - 1) * fact2(2 * n - 1) / pow(2.0, L);
 
-        N = 0.0
-        num_exps = len(self.exps)
-        for ia in range(num_exps):
-            for ib in range(num_exps):
-                N += self.norm[ia]*self.norm[ib]*self.coefs[ia]*self.coefs[ib]/\
-                         np.power(self.exps[ia] + self.exps[ib],L+1.5)
+        double N = 0.0;
+        size_t num_exps = this->exps.size();
+        for (size_t ia = 0; ia < num_exps; ia++)
+        {
+            for (size_t ib = 0; ib < num_exps; ib++)
+            {
+                N += this->norm[ia] * this->norm[ib] * this->coefs[ia] * this->coefs[ib] /
+                     pow(this->exps[ia] + this->exps[ib], L + 1.5);
+            }
+        }
 
-        N *= prefactor
-        N = np.power(N,-0.5)
-        for ia in range(num_exps):
-            self.coefs[ia] *= N
+        N *= prefactor;
+        N = pow(N, -0.5);
+        for (size_t ia = 0; ia < num_exps; ia++)
+        {
+            this->coefs[ia] *= N;
+        }
     }
+};
+double S(BasisFunction a, BasisFunction b);
