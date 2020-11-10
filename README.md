@@ -9,3 +9,6 @@ color carbon [0 200 0]
 color bond [200 200 200]
 color Hydrogen [120 120 120]
 ```
+```
+write image pngj filename.png
+```
