@@ -14,3 +14,10 @@ color Hydrogen [120 120 120]
 ```
 write image pngj filename.png
 ```
+
+Read and write the file in xyz
+```
+import ase.io as asi
+file = asi.read("file.xyz","index=300")
+asi.write("test.xyz", file, "xyz")
+```
