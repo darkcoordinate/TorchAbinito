@@ -1,3 +1,4 @@
+#include <iostream>
 #include <memory>
 #include <math.h>
 #include <vector>
@@ -31,6 +32,21 @@ public:
         this->coefs = coefs;
     }
 
+    void print()
+    {
+        cout << "\ncoefs: ";
+        for (auto i : this->coefs)
+        {
+            cout << i << " ";
+        }
+        cout << "\nexps: ";
+        for (auto i : this->exps)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
+    }
+
     void normalize()
     {
         /* Routine to normalize the basis functions, in case they
@@ -44,15 +60,15 @@ public:
         //normalize primitives first(PGBFs)
         for (size_t i = 0; i < this->norm.size(); i++)
         {
-            this->norm[i] = sqrt(pow(2, 2 * (l + m + n) + 1.5) *
-                                 pow(this->exps[i], l + m + n + 1.5) /
-                                 fact2(2 * l - 1) / fact2(2 * m - 1) /
-                                 fact2(2 * n - 1) / pow(M_1_PI, 1.5));
+            this->norm[i] = sqrt((pow(2, 2 * (l + m + n) + 1.5) *
+                                  pow(this->exps[i], l + m + n + 1.5)) /
+                                 (fact2(2 * l - 1) * fact2(2 * m - 1) *
+                                  fact2(2 * n - 1) * pow(M_PI, 1.5)));
         }
 
         //now normalize the contracted basis functions(CGBFs)
         //Eq.1.44 of Valeev integral whitepaper
-        double prefactor = pow(M_1_PI, 1.5) *
+        double prefactor = pow(M_PI, 1.5) *
                            fact2(2 * l - 1) * fact2(2 * m - 1) * fact2(2 * n - 1) / pow(2.0, L);
 
         double N = 0.0;

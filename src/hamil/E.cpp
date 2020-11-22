@@ -59,16 +59,47 @@ double overlap(double a, vector<int> lmn1, vector<double> A, double b, vector<in
     double S1 = E(l1, l2, 0, A[0] - B[0], a, b); // X
     double S2 = E(m1, m2, 0, A[1] - B[1], a, b); // Y
     double S3 = E(n1, n2, 0, A[2] - B[2], a, b); // Z
+    //cout << pow(M_PI / (a + b), 1.5) << endl;
     return S1 * S2 * S3 * pow(M_PI / (a + b), 1.5);
 }
 
 double fact2(double f)
 {
-    if (f == 0)
+    if (f < 0.5)
     {
         return 1.0;
     }
-    return f * fact2(f - 1.0);
+    else
+    {
+        return f * fact2(f - 1.0);
+    }
+}
+
+double hypergeometric(double a, double b, double c, double x)
+{
+    const double TOLERANCE = 1.0e-10;
+    double term = a * b * x / c;
+    double value = 1.0 + term;
+    int n = 1;
+
+    while (abs(term) > TOLERANCE)
+    {
+        a++, b++, c++, n++;
+        term *= a * b * x / c / n;
+        value += term;
+    }
+
+    return value;
+}
+
+double boys(double n, double T)
+{
+    return hypergeometric(n + 0.5, n + 1.5, -T) / (2.0 * n + 1.0);
+}
+
+double gaussian_product_center(double a, double A, double b, double B)
+{
+    return (a * A + b * B) / (a + b);
 }
 
 double S(BasisFunction a, BasisFunction b)
