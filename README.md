@@ -14,6 +14,9 @@ color Hydrogen [120 120 120]
 ```
 write image pngj filename.png
 ```
+```
+connect (atomno=1) (atomno=2) DELETE
+```
 
 Read and write the file in xyz
 ```
