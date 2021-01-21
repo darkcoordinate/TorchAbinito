@@ -24,3 +24,10 @@ import ase.io as asi
 file = asi.read("file.xyz","index=300")
 asi.write("test.xyz", file, "xyz")
 ```
+```
+Background white
+color carbon [0 200 0]
+color bond [200 200 200]
+color Hydrogen [120 120 120]
+write IMAGE 3600 3200 PNG 10 "perylene-BN2-0046.png"
+```
