@@ -31,3 +31,18 @@ color bond [200 200 200]
 color Hydrogen [120 120 120]
 write IMAGE 2160 1440 PNG 2 "perylene-BN2-0046.png"
 ```
+
+```
+Background white
+color carbon [0 200 0]
+color bond [200 200 200]
+color Hydrogen [120 120 120]
+mo 66
+mo fill
+mo nomesh
+mo translucent
+mo cutoff 0.02
+```
+```
+write IMAGE 2160 1440 PNG 2 "perylene-BN2-0046.png"
+```
