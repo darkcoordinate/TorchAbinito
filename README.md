@@ -60,3 +60,6 @@ vec3 turbo(in float x) {
   );
 }
 ```
+```
+vec3 firePalette(float i) {   float T = 1000. * (3.-i);   vec3 L = vec3(7.4, 5.6, 4.4);   L = pow(L, vec3(5.0)) * (exp(1.43876719683e5 / (T * L)) - 1.0);  return 1.0 - exp(-5e8 / (L/1.)); }
+```
